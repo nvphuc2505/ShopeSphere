@@ -1,0 +1,28 @@
+server:
+  port: 9001
+
+spring:
+  application:
+    name: customer-service
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/ShopSphere
+          # jwk-set-uri: http://localhost:8080/realms/ShopSphere/protocol/openid-connect/certs
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/ecommerce_db
+    username: admin
+    password: admin
+
+keycloak:
+  auth-server-url: http://localhost:8080
+  realm: ShopSphere
+  client-id: edge-service
+  secret: YUAKMdYBO7tCdloiQmQUwmWJDFTkxI8c
+  
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.security.oauth2: DEBUG

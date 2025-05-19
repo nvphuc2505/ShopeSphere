@@ -1,0 +1,31 @@
+version: "3.8"
+services:
+
+  polar-keycloak:
+    image: quay.io/keycloak/keycloak:24.0
+    container_name: "polar-keycloak"
+    command: start-dev
+    volumes:
+      - ./keycloak:/opt/keycloak/data/import
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    ports:
+      - 8080:8080
+
+  polar-postgres:
+    image: "postgres:14.12"
+    container_name: "polar-postgres"
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+    volumes:
+      - ./postgresql/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  polar-redis:
+    image: "redis:7.2"
+    container_name: "polar-redis"
+    ports:
+      - 6379:6379
