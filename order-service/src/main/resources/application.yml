@@ -1,11 +1,11 @@
 server:
-  port: 9002
+  port: 9003
   servlet:
-    context-path: /product
+    context-path: /order
 
 spring:
   application:
-    name: product-service
+    name: order-service
   security:
     oauth2:
       resourceserver:
@@ -16,3 +16,6 @@ spring:
     url: jdbc:postgres://localhost:5432/ecommerce_db
     username: admin
     password: admin
+
+service:
+  product: http://localhost:9002/product

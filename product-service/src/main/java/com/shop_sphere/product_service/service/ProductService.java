@@ -3,12 +3,13 @@ package com.shop_sphere.product_service.service;
 import com.shop_sphere.product_service.exception.DuplicatedException;
 import com.shop_sphere.product_service.exception.ProductNotFoundException;
 import com.shop_sphere.product_service.model.Product;
+import com.shop_sphere.product_service.model.enumeration.ProductCategory;
 import com.shop_sphere.product_service.model.enumeration.ProductStatus;
 import com.shop_sphere.product_service.repository.ProductRepository;
+import com.shop_sphere.product_service.viewmodel.ProductListWithCategoryVm;
 import com.shop_sphere.product_service.viewmodel.ProductPostVm;
 import com.shop_sphere.product_service.viewmodel.ProductUpdateVm;
 import com.shop_sphere.product_service.viewmodel.ProductVm;
-import com.shop_sphere.product_service.viewmodel.ProductListWithCategoryVm;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,8 +25,9 @@ public class ProductService {
 
 
 
-    public List<ProductListWithCategoryVm> getProductListByCategoryId(Long categoryId) {
-        return productRepository.findAllByCategoryId(categoryId);
+    public List<ProductListWithCategoryVm> getProductsByCategory(String category) {
+        ProductCategory productCategory = ProductCategory.valueOf(category.toUpperCase());
+        return productRepository.findAllByCategory(productCategory);
     }
 
     public ProductVm createNewProduct(ProductPostVm productPostVm) {
@@ -35,6 +37,7 @@ public class ProductService {
 
         Product product = Product.builder()
                 .name(productPostVm.name())
+                .category(productPostVm.category())
                 .color(productPostVm.color())
                 .size(productPostVm.size())
                 .description(productPostVm.description())

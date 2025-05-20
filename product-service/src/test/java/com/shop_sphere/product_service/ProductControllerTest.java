@@ -49,9 +49,6 @@ public class ProductControllerTest {
                 new ProductListWithCategoryVm("Quần ống rộng", BigDecimal.valueOf(199000))
         );
 
-        Mockito.when(productService.getProductListByCategoryId(categoryId))
-                .thenReturn(results);
-
         // When & Then
         mockMvc.perform(get("/storefront/products/category/id/{id}", categoryId)
                         .with(user("admin").roles("ADMIN"))

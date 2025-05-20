@@ -3,10 +3,8 @@ package com.shop_sphere.customer_service.service;
 import com.shop_sphere.customer_service.config.KeycloakPropsConfig;
 import com.shop_sphere.customer_service.exception.CustomerNotFoundException;
 import com.shop_sphere.customer_service.exception.DuplicatedException;
-import com.shop_sphere.customer_service.viewmodel.customer.CustomerListVm;
-import com.shop_sphere.customer_service.viewmodel.customer.CustomerPostVm;
-import com.shop_sphere.customer_service.viewmodel.customer.CustomerUpdateVm;
-import com.shop_sphere.customer_service.viewmodel.customer.CustomerVm;
+import com.shop_sphere.customer_service.exception.PasswordMismatchException;
+import com.shop_sphere.customer_service.viewmodel.customer.*;
 import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.core.Response;
 import org.keycloak.admin.client.CreatedResponseUtil;
@@ -34,7 +32,7 @@ public class CustomerService {
         this.keycloakPropsConfig = keycloakPropsConfig;
     }
 
-    private CredentialRepresentation passwordCredential(String password) {
+    private CredentialRepresentation createPasswordCredential(String password) {
         CredentialRepresentation credentialRepresentation = new CredentialRepresentation();
         credentialRepresentation.setTemporary(false);
         credentialRepresentation.setType(CredentialRepresentation.PASSWORD);
@@ -119,7 +117,7 @@ public class CustomerService {
             throw new DuplicatedException(customerPostVm.email());
 
         // Define credential representation
-        CredentialRepresentation credentialRepresentation = passwordCredential(customerPostVm.password());
+        CredentialRepresentation credentialRepresentation = createPasswordCredential(customerPostVm.password());
 
         // Define new user
         UserRepresentation user = new UserRepresentation();
@@ -140,6 +138,20 @@ public class CustomerService {
         userResource.roles().realmLevel().add(Collections.singletonList(roleRepresentation));
 
         return CustomerVm.fromUserRepresentation(user);
+    }
+
+    public void changePassword(String username, CustomerUpdatePasswordVm customerUpdatePasswordVm) {
+
+        if(!customerUpdatePasswordVm.newPassword().equals(customerUpdatePasswordVm.confirmPassword()))
+            throw new PasswordMismatchException();
+
+        RealmResource realmResource = keycloak.realm(keycloakPropsConfig.getRealm());
+
+        if (!checkUsernameExists(realmResource, username))
+            throw new CustomerNotFoundException("USERNAME", username);
+
+        CredentialRepresentation credential = createPasswordCredential(customerUpdatePasswordVm.newPassword());
+        realmResource.users().get(username).resetPassword(credential);
     }
 
     public void updateCustomerById(String userId, CustomerUpdateVm customerUpdateVm) {

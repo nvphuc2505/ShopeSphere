@@ -28,6 +28,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="backoffice-bff" />
         <module name="storefront-bff" />
+        <module name="order-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -39,6 +40,7 @@
       <module name="backoffice-bff" options="-parameters" />
       <module name="customer-service" options="-parameters" />
       <module name="edge-service" options="-parameters" />
+      <module name="order-service" options="-parameters" />
       <module name="product-service" options="-parameters" />
       <module name="storefront-bff" options="-parameters" />
     </option>

@@ -1,5 +1,6 @@
 package com.shop_sphere.product_service.model;
 
+import com.shop_sphere.product_service.model.enumeration.ProductCategory;
 import com.shop_sphere.product_service.model.enumeration.ProductStatus;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -22,10 +23,10 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "category_id")
-    private Long categoryId;
-
     private String name;
+
+    @Enumerated(EnumType.STRING)
+    private ProductCategory category;
 
     private String color;
 

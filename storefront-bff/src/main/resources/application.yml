@@ -1,6 +1,7 @@
 server:
   port: 8001
 
+
 spring:
   application:
     name: storefront-bff
@@ -32,9 +33,9 @@ spring:
         - id: customer-route
           uri: http://localhost:9001
           predicates:
-            - Path=/storefront/profile
-          #filters:
-            
+            - Path=customer/storefront/**
+
+
 
 service-url:
   service:

@@ -1,10 +1,7 @@
 package com.shop_sphere.customer_service.controller;
 
 import com.shop_sphere.customer_service.service.CustomerService;
-import com.shop_sphere.customer_service.viewmodel.customer.CustomerListVm;
-import com.shop_sphere.customer_service.viewmodel.customer.CustomerPostVm;
-import com.shop_sphere.customer_service.viewmodel.customer.CustomerUpdateVm;
-import com.shop_sphere.customer_service.viewmodel.customer.CustomerVm;
+import com.shop_sphere.customer_service.viewmodel.customer.*;
 import jakarta.validation.Valid;
 
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +29,7 @@ public class CustomerController {
         return ResponseEntity.ok(customerService.getCustomers(pageNo));
     }
 
-    @GetMapping("/storefront/profile")
+    @GetMapping("/storefront/customers/profile")
     public ResponseEntity<CustomerVm> getCurrentCustomerProfile() {
         // Jwt jwt = (Jwt) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         // String username = jwt.getClaimAsString("preferred_username");
@@ -70,6 +67,13 @@ public class CustomerController {
     public ResponseEntity<Void> updateProfileCustomerById(@PathVariable String userId,
                                                           @RequestBody CustomerUpdateVm customerUpdateVm) {
         customerService.updateCustomerById(userId, customerUpdateVm);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/storefront/customers/change-password")
+    public ResponseEntity<Void> changePassword(@Valid @RequestBody CustomerUpdatePasswordVm customerUpdatePasswordVm) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        customerService.changePassword(username, customerUpdatePasswordVm);
         return ResponseEntity.noContent().build();
     }
 

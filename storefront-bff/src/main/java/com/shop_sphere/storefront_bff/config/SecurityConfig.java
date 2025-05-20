@@ -2,6 +2,7 @@ package com.shop_sphere.storefront_bff.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -44,8 +45,9 @@ public class SecurityConfig {
             .authorizeExchange(
                 // Endpoint for Storefront
                 authorizeExchangeSpec -> {
-                    authorizeExchangeSpec.pathMatchers("/user-address/**").authenticated();
-                    authorizeExchangeSpec.pathMatchers("/storefront/profile").authenticated();
+                    authorizeExchangeSpec.pathMatchers(HttpMethod.POST, "/storefront/user-address").authenticated();
+                    authorizeExchangeSpec.pathMatchers("/storefront/user-address/**").authenticated();
+                    authorizeExchangeSpec.pathMatchers(HttpMethod.GET, "/storefront/customers/profile").authenticated();
                     authorizeExchangeSpec.anyExchange().permitAll();
                 }
             )

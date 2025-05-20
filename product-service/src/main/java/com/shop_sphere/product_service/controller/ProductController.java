@@ -1,16 +1,17 @@
 package com.shop_sphere.product_service.controller;
 
 import com.shop_sphere.product_service.service.ProductService;
+import com.shop_sphere.product_service.viewmodel.ProductListWithCategoryVm;
 import com.shop_sphere.product_service.viewmodel.ProductPostVm;
 import com.shop_sphere.product_service.viewmodel.ProductUpdateVm;
 import com.shop_sphere.product_service.viewmodel.ProductVm;
-import com.shop_sphere.product_service.viewmodel.ProductListWithCategoryVm;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 @RestController
 public class ProductController {
@@ -23,9 +24,10 @@ public class ProductController {
 
 
 
-    @GetMapping("/storefront/products/category/id/{id}")
-    public ResponseEntity<List<ProductListWithCategoryVm>> getProductListByCategoryId(@PathVariable Long id) {
-        return ResponseEntity.ok(productService.getProductListByCategoryId(id));
+    @GetMapping("/storefront/products/category/{category}")
+    public ResponseEntity<List<ProductListWithCategoryVm>> getProductsByCategory(@PathVariable String category) {
+        List<ProductListWithCategoryVm> products = productService.getProductsByCategory(category);
+        return ResponseEntity.ok(products);
     }
 
     @PostMapping("/backoffice/products")

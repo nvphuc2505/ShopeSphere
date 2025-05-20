@@ -1,5 +1,7 @@
 server:
   port: 9001
+  servlet:
+    context-path: /customer
 
 spring:
   application:
@@ -15,6 +17,14 @@ spring:
     url: jdbc:postgresql://localhost:5432/ecommerce_db
     username: admin
     password: admin
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        # The SQL dialect makes Hibernate generate better SQL for the chosen database
+        # spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.PostgreSQLDialect
 
 keycloak:
   auth-server-url: http://localhost:8080
